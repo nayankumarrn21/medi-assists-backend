@@ -55,8 +55,6 @@ public class UserService implements UserDetailsService {
             }
             authorities.add(new SimpleGrantedAuthority(role));
         }
-        System.out.println(Arrays.toString(rolesArray));
-        System.out.println("My Authries are "+ authorities);
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), authorities);
 

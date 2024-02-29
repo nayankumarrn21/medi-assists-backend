@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table
+//@Entity
+//@Table
 public class Policy {
 
     @Id

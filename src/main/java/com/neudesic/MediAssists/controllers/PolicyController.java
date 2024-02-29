@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class PolicyController {
     }
 
     @DeleteMapping("{pId}")
-    public ResponseEntity<String> deletePolicy(@PathVariable("pId") Integer pid){
+    public ResponseEntity<Policy> deletePolicy(@PathVariable("pId") Integer pid){
         return ResponseEntity.ok(policyService.deletePolicy(pid));
     }
 }

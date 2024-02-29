@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table
+//@Entity
+//@Table
 public class UserPolicyDetails {
 
     @Id
@@ -24,10 +24,7 @@ public class UserPolicyDetails {
     private List<String> beneficiaries;
 
     private String nominee;
-
-    @ManyToOne
-    private User user;
-
+    private Integer userId;
 
     @ManyToOne
     private Policy policy;
@@ -72,12 +69,12 @@ public class UserPolicyDetails {
         this.nominee = nominee;
     }
 
-    public User getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Policy getPolicy() {

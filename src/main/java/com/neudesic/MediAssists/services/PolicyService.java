@@ -1,35 +1,66 @@
 package com.neudesic.MediAssists.services;
 
 
-import com.neudesic.MediAssists.exceptions.ResourceNotFoundException;
 import com.neudesic.MediAssists.modules.Policy;
-import com.neudesic.MediAssists.repositories.PolicyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Service
 public class PolicyService {
 
+//    @Autowired
+//    private PolicyRepository policyRepository;
+
+    @Value("${micros1.url}")
+    private String micros1Url;
+
     @Autowired
-    private PolicyRepository policyRepository;
+    private  WebClient.Builder webClient;
+
+
 
     public Policy createPolicy(Policy policy){
-        return policyRepository.save(policy);
+        return this.webClient.baseUrl(micros1Url).build()
+                .post().uri("policy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(policy))
+                .retrieve()
+                .bodyToMono(Policy.class).block();
     }
 
     public List<Policy> getAll(){
-        return policyRepository.findAll();
+        return this.webClient.baseUrl(micros1Url).build()
+                .get()
+                .uri("policy/list")
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<Policy>>() {}).block();
     }
     public Policy getPolicy(Integer pId){
-        return policyRepository.findById(pId).orElseThrow(()-> new ResourceNotFoundException("Policy", "id", pId));
+            return this.webClient.baseUrl(micros1Url).build()
+                    .get()
+                    .uri("policy/"+pId)
+                    .retrieve()
+                    .bodyToMono(Policy.class).block();
     }
 
-    public String deletePolicy(Integer policyId){
-        policyRepository.findById(policyId).orElseThrow(()->new ResourceNotFoundException("Policy", "id", policyId));
-        policyRepository.deleteById(policyId);
-        return "Policy deleted";
+    public Policy deletePolicy(Integer policyId){
+        Policy policy = getPolicy(policyId);
+        if(policy!=null){
+            return this.webClient.baseUrl(micros1Url).build()
+                    .delete()
+                    .uri("policy/"+policyId)
+                    .retrieve()
+                    .bodyToMono(Policy.class).block();
+        }
+        return null;
     }
 
 }

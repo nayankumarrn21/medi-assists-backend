@@ -22,7 +22,7 @@ public class UserPolicyController {
         return ResponseEntity.ok(userPolicyService.create(userPolicyDto));
     }
 
-    @GetMapping("/{uId}")
+    @GetMapping("/user/{uId}")
     public ResponseEntity<List<UserPolicyDetails>> getListOfUserDetails(@PathVariable("uId") Integer uId ){
         return ResponseEntity.ok(userPolicyService.getListOfUserDetails(uId));
     }
